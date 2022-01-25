@@ -6,3 +6,5 @@ To run the project locally, change to the server directory and run go build foll
 
 References
 https://levelup.gitconnected.com/build-a-todo-app-in-golang-mongodb-and-react-e1357b4690a6
+https://reactjs.org/docs/components-and-props.html
+
