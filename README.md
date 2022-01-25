@@ -15,7 +15,7 @@ to start the backend server. Then cd to the client directory and run the react s
 ```
 npm install && npm start
 ```
-The application should open on your browser.
+The application should open on your browser (http://localhost:3000).
 
 To add a task, type in the task name and hit enter.
 To delete a task, click the delete sign.
