@@ -122,7 +122,8 @@ func GetTask(w http.ResponseWriter, r *http.Request) {
 func getTask() []task {
 	rows, err := db.Query(`
 	  select *
-	  from login.tasks`)
+	  from login.tasks
+	  order by done, id`)
 
 	Check(err)
 	defer rows.Close()
