@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
+import ToggleButton from 'react-bootstrap/ToggleButton'
+
 
 let endpoint = "http://localhost:8080";
 
@@ -22,8 +24,6 @@ class ToDoList extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log(this.state);
-
   };
 
   onSubmit = () => {
@@ -56,32 +56,31 @@ class ToDoList extends Component {
 
         this.setState({
           items: res.data.map(item => {
-            let color = "yellow";
-
-            if (item.Done) {
-              color = "green";
-            }
             return (
-              <Card key={item.Id} color={color} fluid>
+              <Card key={item.Id} fluid>
                 <Card.Content>
-                  <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.Desc}</div>
-                  </Card.Header>
+                  <Card.Meta>
+                    <ToggleButton
+                      className="checkmark"
+                      type="checkbox"
+                      checked={item.Done}
+                      style= {{float: 'left'}}
+                      onChange={(e) => this.updateTask(item.Id)}
+                    >
+                    </ToggleButton>
 
-                  <Card.Meta textAlign="right">
-                    <Icon
-                      name="check circle"
-                      color="green"
-                      onClick={() => this.updateTask(item.Id, item.Desc, true)}
-                    />
-                    <span style={{ paddingRight: 10 }}>Done</span>
                     <Icon
                       name="delete"
                       color="red"
+                      style= {{float: 'right'}}
                       onClick={() => this.deleteTask(item.Id)}
                     />
-                    <span style={{ paddingRight: 10 }}>Delete</span>
                   </Card.Meta>
+
+                  <Card.Header textAlign="left" left-margin="100px">
+                    <div style={{ marginLeft: '30px', marginTop: '-20px', wordWrap: "break-word" }}>{item.Desc}</div>
+                  </Card.Header>
+
                 </Card.Content>
               </Card>
             );
@@ -97,7 +96,7 @@ class ToDoList extends Component {
 
   updateTask = (id) => {
     axios
-      .put(endpoint + "/api/toggleTask/" + id, {
+      .post(endpoint + "/api/toggleTask/" + id, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -124,11 +123,11 @@ class ToDoList extends Component {
     return (
       <div>
         <div className="row">
-          <Header className="header" as="h2">
+          <Header className="App-header">
             To Do List
           </Header>
         </div>
-        <div className="row">
+        <div className="rowcreate">
           <Form onSubmit={this.onSubmit}>
             <Input
               type="text"
@@ -136,11 +135,12 @@ class ToDoList extends Component {
               onChange={this.onChange}
               value={this.state.task}
               fluid
-              placeholder="Create Task"
+              placeholder="Insert new task here"
+              autoComplete="off"
             />
-            {/* <Button >Create Task</Button> */}
           </Form>
         </div>
+
         <div className="row">
           <Card.Group>{this.state.items}</Card.Group>
         </div>
